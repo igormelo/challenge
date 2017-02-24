@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by root on 27/01/17.
  */
-public class Response {
+public class PullResponse {
 
     @SerializedName("url")
     private String url;
@@ -289,4 +289,5 @@ public class Response {
     public void setAssignees(List<?> assignees) {
         this.assignees = assignees;
     }
+
 }

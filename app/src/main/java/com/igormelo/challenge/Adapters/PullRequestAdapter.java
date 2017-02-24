@@ -3,15 +3,18 @@ package com.igormelo.challenge.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.igormelo.challenge.Adapters.holders.ItemViewHolder;
 import com.igormelo.challenge.Adapters.holders.PHolder;
-import com.igormelo.challenge.Models.PullRequests.Response;
+import com.igormelo.challenge.Models.PullRequests.PullResponse;
 import com.igormelo.challenge.R;
 import com.igormelo.challenge.Utils.ImageUtils;
 
@@ -26,9 +29,10 @@ import java.util.List;
 
 public class PullRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    private List<Response> items;
+    private List<PullResponse> items;
+    private int page = 1;
 
-    public PullRequestAdapter(Context context, List<Response> items) {
+    public PullRequestAdapter(Context context, List<PullResponse> items) {
         this.context = context;
         this.items = items;
     }
@@ -36,7 +40,7 @@ public class PullRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_pull, parent, false);
-        return new PHolder(v);
+        return new ItemViewHolder(v);
     }
     private void loadImage(ImageView imgUser, String url){
         ImageUtils.loadImage(context, url, imgUser);
@@ -45,14 +49,23 @@ public class PullRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        final Response item = items.get(position);
+        final PullResponse item = items.get(position);
         DateTime dateTime = new DateTime(item.getCreatedAt());
         itemViewHolder.txtRepositoryName.setText(item.getTitle());
         itemViewHolder.txtRepositoryDesc.setText(item.getBody());
         itemViewHolder.txtDate.setText(DateTimeFormat.forPattern("HH:mm dd/MM/yyyy")
         .print(dateTime));
         itemViewHolder.linNumericInfo.setVisibility(View.GONE);
-        loadImage(itemViewHolder.imgUser, item.getUser().getAvatarUrl());
+        if(item.getUser() != null) {
+            if (item.getUser().getAvatarUrl() != null) {
+                loadImage(itemViewHolder.imgUser, item.getUser().getAvatarUrl());
+            } else {
+                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, "User vazio", Toast.LENGTH_SHORT).show();
+        }
+        
         itemViewHolder.txtUsername.setText(item.getUser().getLogin());
         itemViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,16 +75,20 @@ public class PullRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         });
     }
     private void initDetails(String url){
-        Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        context.startActivity(browser);
+        if (!TextUtils.isEmpty(url)) {
+            Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(browser);
+        } else {
+            Toast.makeText(context, "Not found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public int getItemCount() {
         return items.size();
     }
-    public void addItem(Response response){
-        items.add(response);
+    public void addItem(PullResponse pullResponse){
+        items.add(pullResponse);
         notifyItemInserted(getItemCount());
     }
 }

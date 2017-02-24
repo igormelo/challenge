@@ -1,5 +1,6 @@
 package com.igormelo.challenge;
 
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,16 +27,15 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RepoAdapters repoAdapters;
     private List<Item> repositories = new ArrayList<>();
-    private int page = 3;
+    private int page = 1;
     private SwipeRefreshLayout swipeContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setActionbar();
         recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.smoothScrollToPosition(0);
         RetrofitService retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
 
         Call<Repo> call = retrofitService.getRepositories("language:Java", "stars", page);
@@ -43,13 +43,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Repo> call, Response<Repo> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     Repo repo = response.body();
                     repositories = repo.getItems();
+                    recyclerView.setHasFixedSize(true);
                     repoAdapters = new RepoAdapters(getApplicationContext(),repositories);
                     recyclerView.setAdapter(repoAdapters);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    repoAdapters.notifyItemInserted(0);
+                    repoAdapters.notifyItemRangeChanged(1, repositories.size());
                     recyclerView.smoothScrollToPosition(0);
+
                 }
             }
 
@@ -59,5 +62,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void setActionbar(){
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Language: Java");
+    }
+
 
 }

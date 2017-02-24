@@ -1,50 +1,64 @@
 package com.igormelo.challenge;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.igormelo.challenge.Adapters.PullRequestAdapter;
-import com.igormelo.challenge.Models.PullRequests.Response;
+import com.igormelo.challenge.Models.PullRequests.PullResponse;
+import com.igormelo.challenge.Models.PullRequests.User;
 import com.igormelo.challenge.Services.RetrofitService;
+import com.igormelo.challenge.Utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
+import retrofit2.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class PullRequest extends AppCompatActivity {
     private PullRequestAdapter adapter;
-    private List<Response> items;// = new ArrayList<>();
+    private List<PullResponse> items = new ArrayList<>();
     private int page = 1;
-    private String repo;
-    private String creator;
-    private RecyclerView recyclerView;
+    String repo;
+    String creator;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pull_request);
-        recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
-            creator = getIntent().getStringExtra("creator");
-            repo = getIntent().getStringExtra("repository");
-            RetrofitService retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
-            Call<List<Response>> call = retrofitService.getPull(creator, repo);
-            call.enqueue(new Callback<List<Response>>() {
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_pull);
+        creator = getIntent().getStringExtra("creator");
+        repo = getIntent().getStringExtra("repository");
+        setActionBar();
+        /*PullResponse pullResponse = new PullResponse();
+        User user = new User();
+        user.setLogin(name);
+        user.setAvatarUrl("https://avatars1.githubusercontent.com/u/11230276?v=3&s=460");
+        pullResponse.setUser(user);
+        pullResponse.setTitle(creator);
+        pullResponse.setBody(repo);
+        items.add(pullResponse);
+        adapter = new PullRequestAdapter(getApplicationContext(),items);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(adapter);*/
+
+
+        RetrofitService retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
+            Call<List<PullResponse>> call = retrofitService.getPull(creator, repo, page);
+            call.enqueue(new Callback<List<PullResponse>>() {
                 @Override
-                public void onResponse(Call<List<Response>> call, retrofit2.Response<List<Response>> response) {
+                public void onResponse(Call<List<PullResponse>> call, Response<List<PullResponse>> response) {
                     if(response.isSuccessful()) {
-                        List<Response> res = response.body();
-                        //Response res = response.body();
+                        List<PullResponse> res = response.body();
                         items = res;
-                        adapter = new PullRequestAdapter(getApplicationContext(), items);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        adapter = new PullRequestAdapter(getApplicationContext(),items);
                         recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        recyclerView.smoothScrollToPosition(0);
 
                     } else {
                         Toast.makeText(PullRequest.this, "error", Toast.LENGTH_SHORT).show();
@@ -52,11 +66,17 @@ public class PullRequest extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<List<Response>> call, Throwable t) {
+                public void onFailure(Call<List<PullResponse>> call, Throwable t) {
 
                 }
 
             });
 
+
+}
+    private void setActionBar(){
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(creator);
     }
 }

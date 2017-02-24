@@ -176,4 +176,6 @@ public class User {
     public void setSiteAdmin(boolean siteAdmin) {
         this.siteAdmin = siteAdmin;
     }
+
+
 }

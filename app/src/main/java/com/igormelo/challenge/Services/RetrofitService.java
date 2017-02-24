@@ -1,7 +1,7 @@
 package com.igormelo.challenge.Services;
 
 import com.google.gson.GsonBuilder;
-import com.igormelo.challenge.Models.PullRequests.Response;
+import com.igormelo.challenge.Models.PullRequests.PullResponse;
 import com.igormelo.challenge.Repo;
 
 import java.util.List;
@@ -37,8 +37,10 @@ public interface RetrofitService {
             .build();
 //Chamada dos Pull Requests
     @GET("repos/{creator}/{repository}/pulls")
-    Call<List<Response>> getPull(@Path("creator") String creator,
-                                @Path("repository") String repository);
+    Call<List<PullResponse>> getPull(@Path("creator") String creator,
+                                     @Path("repository") String repository,
+                                     @Query("page") int page);
+
 
 
 }
