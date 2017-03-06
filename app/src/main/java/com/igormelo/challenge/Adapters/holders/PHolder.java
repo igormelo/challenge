@@ -6,7 +6,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-
+import android.widget.ProgressBar;
 import com.igormelo.challenge.R;
 
 import butterknife.Bind;
@@ -16,8 +16,10 @@ import butterknife.Bind;
  */
 
 public class PHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public ProgressBar progressBar;
     public PHolder(View itemView) {
         super(itemView);
+        progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
     }
 
     @Override

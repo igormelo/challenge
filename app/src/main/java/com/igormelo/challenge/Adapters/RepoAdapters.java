@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.igormelo.challenge.Adapters.holders.ItemViewHolder;
 import com.igormelo.challenge.Models.Item;
@@ -16,7 +14,6 @@ import com.igormelo.challenge.PullRequest;
 import com.igormelo.challenge.R;
 import com.igormelo.challenge.Utils.ImageUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,12 +23,10 @@ import java.util.List;
 public class RepoAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context context;
     private List<Item> items;
-    private RepoAdapters repoAdapters;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private boolean loading;
     private RecyclerView recyclerView;
-    private List<Item> repositories = new ArrayList<>();
-    private static final String PULL_CREATOR = "creator";
-    private static final String PULL_REPO = "repository";
-    private boolean loading = false;
 
 
     public RepoAdapters(Context context, List<Item> items) {
@@ -39,11 +34,22 @@ public class RepoAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         this.items = items;
     }
 
+    @Override
+    public int getItemViewType(int position){
+        return items.get(position) !=null? 1 :0;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_repository, parent, false);
-        return new ItemViewHolder(v);
+        ItemViewHolder viewHolder =null;
+        if(viewType == 1) {
+            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repository, parent, false);
+            viewHolder = new ItemViewHolder(layoutView);
+        } else {
+            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repository, parent, false);
+            viewHolder = new ItemViewHolder(layoutView);
+        }
+        return viewHolder;
     }
 
     @Override
@@ -56,13 +62,8 @@ public class RepoAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             itemViewHolder.txtRepositoryStars.setText(String.valueOf(item.getStargazersCount()));
             itemViewHolder.txtUsername.setText(item.getOwner().getLogin());
             loadImage(itemViewHolder.imgUser, item.getOwner().getAvatarUrl());
-            //if ((position >= getItemCount() -1)){
-                //repoAdapters.notifyItemInserted(0);
-                //repoAdapters.notifyItemRangeChanged(1, repositories.size());
-                //recyclerView.smoothScrollToPosition(0);
-                
-            //}
-            itemViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+
+                    itemViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PullRequest.class);
@@ -79,8 +80,8 @@ public class RepoAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public int getItemCount() {
         return items.size();
     }
+
     private void loadImage(AppCompatImageView imgUser, String avatarUrl) {
         ImageUtils.loadImage(context, avatarUrl, imgUser);
     }
-
 }
