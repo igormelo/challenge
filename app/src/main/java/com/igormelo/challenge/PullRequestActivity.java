@@ -4,17 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.igormelo.challenge.Adapters.PullRequestAdapter;
-import com.igormelo.challenge.Models.PullRequests.PullResponse;
-import com.igormelo.challenge.Models.PullRequests.User;
-import com.igormelo.challenge.Services.RetrofitService;
-import com.igormelo.challenge.Utils.ImageUtils;
+import com.igormelo.challenge.adapters.PullRequestAdapter;
+import com.igormelo.challenge.models.PullRequests.PullResponse;
+import com.igormelo.challenge.services.RetrofitService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,7 @@ import retrofit2.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class PullRequest extends AppCompatActivity {
+public class PullRequestActivity extends AppCompatActivity {
     private PullRequestAdapter adapter;
     private List<PullResponse> items = new ArrayList<>();
     private int page = 1;
@@ -66,7 +63,7 @@ public class PullRequest extends AppCompatActivity {
                         recyclerView.smoothScrollToPosition(0);
 
                     } else {
-                        Toast.makeText(PullRequest.this, "error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PullRequestActivity.this, "error", Toast.LENGTH_SHORT).show();
                     }
                 }
 

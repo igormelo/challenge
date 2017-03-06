@@ -1,4 +1,4 @@
-package com.igormelo.challenge.Models.PullRequests;
+package com.igormelo.challenge.models.PullRequests;
 
 import com.google.gson.annotations.SerializedName;
 

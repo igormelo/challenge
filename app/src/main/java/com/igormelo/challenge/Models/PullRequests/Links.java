@@ -1,4 +1,4 @@
-package com.igormelo.challenge.Models.PullRequests;
+package com.igormelo.challenge.models.PullRequests;
 
 /**
  * Created by root on 27/01/17.

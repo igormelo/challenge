@@ -2,7 +2,7 @@ package com.igormelo.challenge;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.igormelo.challenge.Models.Item;
+import com.igormelo.challenge.models.Item;
 
 import java.util.List;
 

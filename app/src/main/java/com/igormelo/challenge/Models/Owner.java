@@ -1,4 +1,4 @@
-package com.igormelo.challenge.Models;
+package com.igormelo.challenge.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

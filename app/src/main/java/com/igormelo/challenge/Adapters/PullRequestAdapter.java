@@ -1,9 +1,8 @@
-package com.igormelo.challenge.Adapters;
+package com.igormelo.challenge.adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,11 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.igormelo.challenge.Adapters.holders.ItemViewHolder;
-import com.igormelo.challenge.Adapters.holders.PHolder;
-import com.igormelo.challenge.Models.PullRequests.PullResponse;
+import com.igormelo.challenge.adapters.holders.ItemViewHolder;
+import com.igormelo.challenge.models.PullRequests.PullResponse;
 import com.igormelo.challenge.R;
-import com.igormelo.challenge.Utils.ImageUtils;
+import com.igormelo.challenge.utils.ImageUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

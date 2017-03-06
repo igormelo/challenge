@@ -1,5 +1,7 @@
-package com.igormelo.challenge.Adapters.holders;
+package com.igormelo.challenge.adapters.holders;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.CardView;
@@ -8,7 +10,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.igormelo.challenge.PullRequestActivity;
 import com.igormelo.challenge.R;
+import com.igormelo.challenge.models.Item;
+import com.igormelo.challenge.utils.ImageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,5 +54,23 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @Override
     public void onClick(View v) {
         Toast.makeText(null, "oi", Toast.LENGTH_SHORT).show();
+    }
+
+    public void bindView(final Item item, int position, final Context context) {
+        this.txtRepositoryName.setText(item.getName());
+        this.txtRepositoryDesc.setText(item.getDescription());
+        this.txtRepositoryForks.setText(String.valueOf(item.getForks()));
+        this.txtRepositoryStars.setText(String.valueOf(item.getStargazersCount()));
+        this.txtUsername.setText(item.getOwner().getLogin());
+        ImageUtils.loadImage(context, item.getOwner().getAvatarUrl(), this.imgUser);
+        this.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PullRequestActivity.class);
+                intent.putExtra("creator", item.getOwner().getLogin());
+                intent.putExtra("repository", item.getName());
+                context.startActivity(intent);
+            }
+        });
     }
 }

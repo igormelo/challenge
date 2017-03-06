@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:text="Button"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:id="@+id/button" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

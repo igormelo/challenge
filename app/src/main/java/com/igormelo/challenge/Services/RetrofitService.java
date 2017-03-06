@@ -1,7 +1,7 @@
-package com.igormelo.challenge.Services;
+package com.igormelo.challenge.services;
 
 import com.google.gson.GsonBuilder;
-import com.igormelo.challenge.Models.PullRequests.PullResponse;
+import com.igormelo.challenge.models.PullRequests.PullResponse;
 import com.igormelo.challenge.Repo;
 
 import java.util.List;

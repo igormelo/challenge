@@ -1,4 +1,4 @@
-package com.igormelo.challenge.Utils;
+package com.igormelo.challenge.utils;
 
 import android.content.Context;
 import android.widget.ImageView;
