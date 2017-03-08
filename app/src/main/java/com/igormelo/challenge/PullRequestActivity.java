@@ -36,46 +36,15 @@ public class PullRequestActivity extends AppCompatActivity {
         creator = getIntent().getStringExtra("creator");
         repo = getIntent().getStringExtra("repository");
         setActionBar();
-        /*PullResponse pullResponse = new PullResponse();
-        User user = new User();
-        user.setLogin(name);
-        user.setAvatarUrl("https://avatars1.githubusercontent.com/u/11230276?v=3&s=460");
-        pullResponse.setUser(user);
-        pullResponse.setTitle(creator);
-        pullResponse.setBody(repo);
-        items.add(pullResponse);
-        adapter = new PullRequestAdapter(getApplicationContext(),items);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(adapter);*/
+        getPullRequests();
 
 
-        RetrofitService retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
-            Call<List<PullResponse>> call = retrofitService.getPull(creator, repo, page);
-            call.enqueue(new Callback<List<PullResponse>>() {
-                @Override
-                public void onResponse(Call<List<PullResponse>> call, Response<List<PullResponse>> response) {
-                    if(response.isSuccessful()) {
-                        List<PullResponse> res = response.body();
-                        items = res;
-                        adapter = new PullRequestAdapter(getApplicationContext(),items);
-                        recyclerView.setAdapter(adapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        recyclerView.smoothScrollToPosition(0);
-
-                    } else {
-                        Toast.makeText(PullRequestActivity.this, "error", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<PullResponse>> call, Throwable t) {
-
-                }
-
-            });
 
 
 }
+    private void configRecyclerView(){
+
+    }
     private void setActionBar(){
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -85,5 +54,33 @@ public class PullRequestActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return true;
+    }
+
+    private void getPullRequests(){
+        RetrofitService retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
+        Call<List<PullResponse>> call = retrofitService.getPull(creator, repo, page);
+        call.enqueue(new Callback<List<PullResponse>>() {
+            @Override
+            public void onResponse(Call<List<PullResponse>> call, Response<List<PullResponse>> response) {
+                if(response.isSuccessful()) {
+                    List<PullResponse> res = response.body();
+                    items = res;
+                    adapter = new PullRequestAdapter(getApplicationContext(),items);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.smoothScrollToPosition(0);
+
+                } else {
+                    Toast.makeText(PullRequestActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PullResponse>> call, Throwable t) {
+
+            }
+
+        });
+
     }
 }

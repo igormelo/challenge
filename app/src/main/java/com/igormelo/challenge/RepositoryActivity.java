@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,8 +15,8 @@ import com.igormelo.challenge.adapters.RepoAdapter;
 import com.igormelo.challenge.models.Item;
 import com.igormelo.challenge.services.RetrofitService;
 import com.igormelo.challenge.utils.EndlessRecyclerOnScrollListener;
-
 import java.util.ArrayList;
+import com.igormelo.challenge.Repo;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,9 +47,9 @@ public class RepositoryActivity extends AppCompatActivity {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe);
         button = (Button)findViewById(R.id.button);
         configRecyclerView();
+        configToTheTop();
         retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
         getRepositories(languageStatic, stars, page);
-
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -59,13 +60,23 @@ public class RepositoryActivity extends AppCompatActivity {
             }
         });
     }
+    private void configToTheTop(){
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibility = (linearLayoutManager.findFirstCompletelyVisibleItemPosition()!=0) ? View.VISIBLE : View.GONE;
+                button.setVisibility(visibility);
+            }
+        });
+        button.setOnClickListener(e -> recyclerView.scrollToPosition(0));
+    }
 
     private void configRecyclerView() {
         repoAdapter = new RepoAdapter(getApplicationContext(), repositories);
         linearLayoutManager = new LinearLayoutManager(RepositoryActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(repoAdapter);
-
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
@@ -91,7 +102,6 @@ public class RepositoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Repo> call, Response<Repo> response) {
                 if (response.isSuccessful()) {
-                    //totalPages = response.body().getTotalCount();
                     totalPages = 3;
                     final Repo repo = response.body();
                     repositories.addAll(repo.getItems());
