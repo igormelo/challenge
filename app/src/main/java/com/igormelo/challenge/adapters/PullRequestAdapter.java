@@ -75,6 +75,7 @@ public class PullRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void initDetails(String url){
         if (!TextUtils.isEmpty(url)) {
             Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            browser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(browser);
         } else {
             Toast.makeText(context, "Not found", Toast.LENGTH_SHORT).show();

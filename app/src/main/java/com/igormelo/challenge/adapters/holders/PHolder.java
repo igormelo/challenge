@@ -22,6 +22,6 @@ public class PHolder extends RecyclerView.ViewHolder implements View.OnClickList
     }
 
     public void bindView(int totalPage, int currentpage) {
-        progressBar.setVisibility(currentpage < totalPage ? View.GONE : View.VISIBLE);
+        progressBar.setVisibility(currentpage < totalPage ? View.VISIBLE : View.GONE);
     }
 }

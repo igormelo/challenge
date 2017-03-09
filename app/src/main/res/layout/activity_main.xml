@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:text="Button"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="31dp"
-        android:id="@+id/button" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/toolbar"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:background="?attr/colorPrimary"
-             />
-
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="br.com.ioasys.doutorja.ui.HealthPlansUi">
+        android:layout_height="match_parent"
+        tools:context="br.com.ioasys.doutorja.ui.HealthPlansUi">
 
 
             <android.support.v4.widget.SwipeRefreshLayout
@@ -35,17 +19,25 @@
                 android:background="@android:color/white">
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/my_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#f4f4f4"
-                    tools:listitem="@layout/item_repository"/>
             </android.support.v4.widget.SwipeRefreshLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f4f4f4"
+                tools:listitem="@layout/item_repository" />
+        <Button
+            android:text="To the top"
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="bottom|center"
+            android:alpha="0.3"
+            android:background="@drawable/shape"
+             />
 
 
         </android.support.design.widget.CoordinatorLayout>
 
-    </RelativeLayout>
 </LinearLayout>

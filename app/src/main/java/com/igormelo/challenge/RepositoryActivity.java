@@ -1,5 +1,6 @@
 package com.igormelo.challenge;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +17,8 @@ import com.igormelo.challenge.models.Item;
 import com.igormelo.challenge.services.RetrofitService;
 import com.igormelo.challenge.utils.EndlessRecyclerOnScrollListener;
 import java.util.ArrayList;
-import com.igormelo.challenge.Repo;
 import java.util.List;
-
+import com.igormelo.challenge.Repo;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +45,7 @@ public class RepositoryActivity extends AppCompatActivity {
         setActionbar();
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe);
-        button = (Button)findViewById(R.id.button);
+        button = (Button) findViewById(R.id.button);
         configRecyclerView();
         configToTheTop();
         retrofitService = RetrofitService.retrofit.create(RetrofitService.class);
@@ -61,15 +61,21 @@ public class RepositoryActivity extends AppCompatActivity {
         });
     }
     private void configToTheTop(){
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+     recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+               super.onScrolled(recyclerView, dx, dy);
                 int visibility = (linearLayoutManager.findFirstCompletelyVisibleItemPosition()!=0) ? View.VISIBLE : View.GONE;
                 button.setVisibility(visibility);
             }
         });
-        button.setOnClickListener(e -> recyclerView.scrollToPosition(0));
+        button.setOnClickListener(e -> {
+            if (repoAdapter.getCurrentPage() <= 1) {
+               recyclerView.smoothScrollToPosition(0);
+            } else {
+                recyclerView.scrollToPosition(0);
+            }
+        });
     }
 
     private void configRecyclerView() {
@@ -102,7 +108,7 @@ public class RepositoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Repo> call, Response<Repo> response) {
                 if (response.isSuccessful()) {
-                    totalPages = 3;
+                    totalPages = 10;
                     final Repo repo = response.body();
                     repositories.addAll(repo.getItems());
                     repoAdapter.notifyDataSetChanged();

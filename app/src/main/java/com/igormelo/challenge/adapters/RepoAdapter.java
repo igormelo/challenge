@@ -67,7 +67,6 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
     }
 
     public int getTotalPages() {

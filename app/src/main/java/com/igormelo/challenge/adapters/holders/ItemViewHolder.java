@@ -56,7 +56,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         Toast.makeText(null, "oi", Toast.LENGTH_SHORT).show();
     }
 
-    public void bindView(final Item item, int position, final Context context) {
+    public void bindView(final Item item, int position, Context context) {
         this.txtRepositoryName.setText(item.getName());
         this.txtRepositoryDesc.setText(item.getDescription());
         this.txtRepositoryForks.setText(String.valueOf(item.getForks()));
@@ -67,6 +67,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PullRequestActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("creator", item.getOwner().getLogin());
                 intent.putExtra("repository", item.getName());
                 context.startActivity(intent);
