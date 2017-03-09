@@ -33,7 +33,7 @@ public class RepositoryActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
     private LinearLayoutManager linearLayoutManager;
     private RetrofitService retrofitService;
-    private final String languageStatic = "language:Java", stars = "stars";
+    private final String languageStatic = "language:c#", stars = "stars";
     private Button button;
 
     @Override
@@ -70,7 +70,7 @@ public class RepositoryActivity extends AppCompatActivity {
             }
         });
         button.setOnClickListener(e -> {
-            if (repoAdapter.getCurrentPage() <= 1) {
+            if (linearLayoutManager.findLastVisibleItemPosition() <=30) {
                recyclerView.smoothScrollToPosition(0);
             } else {
                 recyclerView.scrollToPosition(0);
@@ -108,6 +108,7 @@ public class RepositoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Repo> call, Response<Repo> response) {
                 if (response.isSuccessful()) {
+                    button.setVisibility(View.VISIBLE);
                     totalPages = 10;
                     final Repo repo = response.body();
                     repositories.addAll(repo.getItems());

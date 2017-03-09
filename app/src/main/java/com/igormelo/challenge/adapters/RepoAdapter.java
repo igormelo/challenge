@@ -34,7 +34,6 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     @Override
     public int getItemViewType(int position){
-        //return items.get(position) !=null? 1 :0;
         if(position == items.size()) return VIEW_TYPES.Footer;
         else
             return VIEW_TYPES.Normal;

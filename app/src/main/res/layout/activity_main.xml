@@ -30,10 +30,12 @@
         <Button
             android:text="To the top"
             android:id="@+id/button"
+            android:textColor="#FFFF"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_anchorGravity="bottom|center"
-            android:alpha="0.3"
+            android:alpha="0.4"
             android:background="@drawable/shape"
              />
 
